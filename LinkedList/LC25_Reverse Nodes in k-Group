@@ -1,0 +1,76 @@
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode prev = dummy;
+
+        while (true) {
+            ListNode end = prev;
+
+            // move end k steps
+            for (int i = 0; i < k && end != null; i++) {
+                end = end.next;
+            }
+
+            if (end == null) break;
+
+            ListNode nextGroup = end.next;
+            ListNode curr = prev.next;
+            ListNode pre = nextGroup;
+
+            // reverse current group
+            while (curr != nextGroup) {
+                ListNode next = curr.next;
+                curr.next = pre;
+                pre = curr;
+                curr = next;
+            }
+
+            // connect reversed group
+            ListNode start = prev.next;
+            prev.next = end;
+            prev = start;
+        }
+
+        return dummy.next;
+    }
+}
+// Using Recursion
+
+// class Solution {
+//     public ListNode reverseKGroup(ListNode head, int k) {
+//         ListNode temp = head;
+//         int count = 0;
+
+//         // check k nodes exist or not
+//         while(temp != null && count < k){
+//             temp = temp.next;
+//             count++;
+//         }
+
+//         // if k nodes exist
+//         if(count == k){
+//             ListNode prev = null;
+//             ListNode curr = head;
+//             ListNode next = null;
+//             count = 0;
+
+//             // reverse k nodes
+//             while(curr != null && count < k){
+//                 next = curr.next;
+//                 curr.next = prev;
+//                 prev = curr;
+//                 curr = next;
+//                 count++;
+//             }
+
+//             // connect remaining list
+//             head.next = reverseKGroup(curr, k);
+
+//             return prev;
+//         }
+
+//         return head;
+//     }
+// }
